@@ -1,0 +1,32 @@
+.toggle-all{
+  position: absolute;
+  display: none;
+}
+
+.toggle-all + label{
+  position: absolute;
+  width: 60px;
+  height: 34px;
+  font-size: 0;
+  top: 14px;
+  left: -14px;
+  transform: rotate(90deg);
+  cursor: pointer;
+}
+
+.toggle-all + label::before{
+  content: '❯';
+  font-size: 22px;
+  color: #e6e6e6;
+  padding: 10px 20px;
+}
+
+.toggle-all.checked + label::before{
+  color: #737373;
+}
+
+.todo-list{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}

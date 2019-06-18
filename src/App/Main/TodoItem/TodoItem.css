@@ -1,0 +1,65 @@
+.todo-list__item{
+  position: relative;
+  padding: 5px;
+  font-size: 24px;
+  border-bottom: 1px solid #ededed;
+}
+
+.edit{
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+  width: 90%;
+  height: 100%;
+  font-size: 100%;
+}
+
+.edit.show{
+  display: block;
+}
+
+.todo-list__item-content{
+  display: flex;
+  align-items: center;
+}
+
+.todo-list__item-check{
+  display: none;
+}
+
+.todo-list__item-check + label{
+  position: relative;
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  border: 1px solid #d9d9d9;
+  border-radius: 50%;
+}
+
+.todo-list__item-check + .check{
+  background: url(../../../img/tick.png) no-repeat center center;
+}
+
+.check + .todo-list__item-text{
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+
+.todo-list__item-text{
+  width: 80%;
+  padding: 15px 20px;
+}
+
+.todo-list__item-close{
+  display: none;
+  margin-left: auto;
+  margin-right: 15px;
+  background: none;
+  border: none;
+  color: red;
+}
+
+.todo-list__item:hover .todo-list__item-close{
+  display: block;
+}
