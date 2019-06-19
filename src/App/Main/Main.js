@@ -1,9 +1,12 @@
 import React from 'react';
 import TodoItem from './TodoItem/TodoItem';
-//import './Main.css';
 import  {ToggleAllInput, ToggleAllLabel, TodoList} from './MainStyle';
 
 class Main extends React.Component{
+  state = {
+    textFromEditInput: '',
+    editing: null,
+  }
 
   toggleAll = () => {
     const array = this.props.store.getItem() || [];
@@ -31,6 +34,73 @@ class Main extends React.Component{
     this.props.reRender();
   }
 
+  toggle = (id) => {
+    const array = this.props.store.getItem() || [];
+
+    array.find(el => {
+      if(el.id === id) el.checked = !el.checked
+    });
+
+    this.props.store.setItem(array);
+    this.props.reRender();
+  }
+
+  delete = (id) => {
+    const array = this.props.store.getItem() || [];
+
+    array.splice(array.indexOf(array.find(el=> el.id === id )),1);
+
+    this.props.store.setItem(array);
+    this.props.reRender();
+  }
+
+  handleShowEdit = (id) => {
+    this.setState({
+      editing: id
+    });
+  }
+
+  handleChangeEditInput = (e) => {
+    this.setState({
+      textFromEditInput: e.target.value,
+    });
+  }
+
+  handleSubmitEdit = (e) => {
+    if (e.keyCode !== 13) {
+      return;
+    }
+
+    e.preventDefault();
+
+    const array = this.props.store.getItem();
+    let val = this.state.textFromEditInput.trim();
+
+    if(!val){
+      return;
+    }
+
+    array.find(el=>{
+      if(el.id === +(e.target.id)){
+        el.value = this.state.textFromEditInput;
+      }
+    })
+
+    this.props.store.setItem(array);
+    this.props.reRender();
+    this.setState({
+      editing: null,
+      textFromEditInput: ''
+    });
+  }
+
+  handleChangeBlurInput = () => {
+    this.setState({
+      editing: null,
+      textFromEditInput: ''
+    });
+  }
+
   render(){
     const itemsLength = this.props.quantityItems;
     const list = this.props.items;
@@ -40,9 +110,6 @@ class Main extends React.Component{
 
     if(itemsLength){
       ToggleAllLabelWrapper = ToggleAllLabel(this.props.completedCounter, this.props.quantityItems);
-      //console.log(toggleAllLabelWrapper);
-
-      //console.log(ToggleAllLabel(this.props.completedCounter, this.props.quantityItems));
        a = <ToggleAllLabelWrapper
         className="toggle-all-label"
         htmlFor="toggle-all"
@@ -60,6 +127,14 @@ class Main extends React.Component{
           checked={item.checked}
           reRender={this.props.reRender}
           items={this.props.items}
+          toggle={this.toggle}
+          delete={this.delete}
+          handleShowEdit={this.handleShowEdit}
+          handleChangeEditInput={this.handleChangeEditInput}
+          handleSubmitEdit={this.handleSubmitEdit}
+          handleChangeBlurInput={this.handleChangeBlurInput}
+          editing={this.state.editing}
+          textFromEditInput={this.state.textFromEditInput}
         />
       )
     }
@@ -79,20 +154,5 @@ class Main extends React.Component{
     );
   }
 }
-
-// "browserslist": {
-//   "production": [
-//     ">0.2%",
-//     "not dead",
-//     "not op_mini all"
-//   ],
-//   "development": [
-//     "last 1 chrome version",
-//     "last 1 firefox version",
-//     "last 1 safari version"
-//   ]
-// }
-
-
 
 export default Main
